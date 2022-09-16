@@ -468,6 +468,8 @@ export interface Track {
   readonly track: string;
   /** The title of the track. */
   readonly title: string;
+  /** The original title of the track (before any edits). */
+  originalTitle?: string;
   /** The identifier of the track. */
   readonly identifier: string;
   /** The author of the track. */
@@ -480,6 +482,8 @@ export interface Track {
   readonly isStream: boolean;
   /** The uri of the track. */
   readonly uri: string;
+  /** The original uri of the track (before any edits) */
+  originalUri?: string;
   /** The thumbnail of the track or null if it's a unsupported source. */
   readonly thumbnail: string | null;
   /** The user that requested the track. */
@@ -496,6 +500,10 @@ export interface UnresolvedTrack extends Partial<Track> {
   author?: string;
   /** The duration to search within 1500 milliseconds of the results from YouTube. */
   duration?: number;
+  /** The original title of the track. */
+  originalTitle?: string;
+  /** The original uri of the track. */
+  originalUri?: string;
   /** Resolves into a Track. */
   resolve(): Promise<void>;
 }

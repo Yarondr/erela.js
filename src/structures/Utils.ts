@@ -186,7 +186,13 @@ export abstract class TrackUtils {
         );
       });
 
-      if (originalAudio) return originalAudio;
+      if (originalAudio) {
+        if (unresolvedTrack.originalTitle)
+          originalAudio.originalTitle = unresolvedTrack.originalTitle;
+        if (unresolvedTrack.originalUri)
+          originalAudio.originalUri = unresolvedTrack.originalUri;
+        return originalAudio;
+      }
     }
 
     if (unresolvedTrack.duration) {
@@ -195,9 +201,19 @@ export abstract class TrackUtils {
         (track.duration <= (unresolvedTrack.duration + 1500))
       );
 
-      if (sameDuration) return sameDuration;
+      if (sameDuration) {
+        if (unresolvedTrack.originalTitle)
+          sameDuration.originalTitle = unresolvedTrack.originalTitle;
+        if (unresolvedTrack.originalUri)
+          sameDuration.originalUri = unresolvedTrack.originalUri;
+        return sameDuration;
+      }
     }
 
+    if (unresolvedTrack.originalTitle)
+      res.tracks[0].originalTitle = unresolvedTrack.originalTitle;
+    if (unresolvedTrack.originalUri)
+      res.tracks[0].originalUri = unresolvedTrack.originalUri;
     return res.tracks[0];
   }
 }
