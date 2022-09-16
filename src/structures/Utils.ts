@@ -265,6 +265,10 @@ export interface UnresolvedQuery {
   author?: string;
   /** The duration of the unresolved track. If provided it will have a more precise search. */
   duration?: number;
+  /** The original title of the unresolved track. */
+  originalTitle?: string;
+  /** The original uri of the unresolved track. */
+  originalUri?: string;
 }
 
 export type Sizes =
