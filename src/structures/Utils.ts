@@ -110,6 +110,8 @@ export abstract class TrackUtils {
         },
         requester,
       };
+      if (!track.originalTitle) track.originalTitle = track.title;
+      if (!track.originalUri) track.originalUri = track.uri;
 
       track.displayThumbnail = track.displayThumbnail.bind(track);
 
