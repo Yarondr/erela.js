@@ -1,6 +1,6 @@
 {
   "name": "@yarond/erela.js",
-  "version": "2.3.4",
+  "version": "2.3.6",
   "description": "An easy-to-use Lavalink client for NodeJS.",
   "main": "dist/index.js",
   "types": "typings/index.d.ts",
@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc",
     "lint": "eslint --ext .ts ./src",
-    "types": "dts-bundle --removeSource --name erela.js --main ./dist --out ../typings/index.d.ts --baseDir ./dist",
+    "types": "dts-bundle --removeSource --name @yarond/erela.js --main ./dist --out ../typings/index.d.ts --baseDir ./dist",
     "docs": "typedoc --json ./docs.json --mode file --excludeProtected --excludePrivate --excludeExternals src/structures",
     "publish:stable": "yarn build && yarn types && yarn publish --access=public",
     "publish:beta": "yarn build && yarn types && yarn publish --tag beta --access=public"
