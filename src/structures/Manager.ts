@@ -241,8 +241,6 @@ export class Manager extends EventEmitter {
   constructor(options: ManagerOptions) {
     super();
 
-    dotenv.config();
-
     check(options);
 
     Structure.get("Player").init(this);
@@ -275,6 +273,8 @@ export class Manager extends EventEmitter {
       for (const nodeOptions of this.options.nodes)
         new (Structure.get("Node"))(nodeOptions);
     }
+
+    dotenv.config();
   }
 
   /**
