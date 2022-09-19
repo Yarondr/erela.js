@@ -490,6 +490,10 @@ export interface Track {
   readonly requester: unknown | null;
   /** Displays the track thumbnail with optional size or null if it's a unsupported source. */
   displayThumbnail(size?: Sizes): string;
+  /** The artists of the track. */
+  artists?: string[];
+  /** The album of the track. */
+  album?: string;
 }
 
 /** Unresolved tracks can't be played normally, they will resolve before playing into a Track. */
@@ -504,6 +508,10 @@ export interface UnresolvedTrack extends Partial<Track> {
   originalTitle?: string;
   /** The original uri of the track. */
   originalUri?: string;
+  /** The artists of the track. */
+  artists?: string[];
+  /** The album of the track. */
+  album?: string;
   /** Resolves into a Track. */
   resolve(): Promise<void>;
 }

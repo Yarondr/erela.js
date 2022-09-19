@@ -189,10 +189,10 @@ export abstract class TrackUtils {
       });
 
       if (originalAudio) {
-        if (unresolvedTrack.originalTitle)
-          originalAudio.originalTitle = unresolvedTrack.originalTitle;
-        if (unresolvedTrack.originalUri)
-          originalAudio.originalUri = unresolvedTrack.originalUri;
+        if (unresolvedTrack.originalTitle) originalAudio.originalTitle = unresolvedTrack.originalTitle;
+        if (unresolvedTrack.originalUri) originalAudio.originalUri = unresolvedTrack.originalUri;
+        if (unresolvedTrack.artists) originalAudio.artists = unresolvedTrack.artists;
+        if (unresolvedTrack.album) originalAudio.album = unresolvedTrack.album;
         return originalAudio;
       }
     }
@@ -204,18 +204,18 @@ export abstract class TrackUtils {
       );
 
       if (sameDuration) {
-        if (unresolvedTrack.originalTitle)
-          sameDuration.originalTitle = unresolvedTrack.originalTitle;
-        if (unresolvedTrack.originalUri)
-          sameDuration.originalUri = unresolvedTrack.originalUri;
+        if (unresolvedTrack.originalTitle) sameDuration.originalTitle = unresolvedTrack.originalTitle;
+        if (unresolvedTrack.originalUri) sameDuration.originalUri = unresolvedTrack.originalUri;
+        if (unresolvedTrack.artists) sameDuration.artists = unresolvedTrack.artists;
+        if (unresolvedTrack.album) sameDuration.album = unresolvedTrack.album;
         return sameDuration;
       }
     }
 
-    if (unresolvedTrack.originalTitle)
-      res.tracks[0].originalTitle = unresolvedTrack.originalTitle;
-    if (unresolvedTrack.originalUri)
-      res.tracks[0].originalUri = unresolvedTrack.originalUri;
+    if (unresolvedTrack.originalTitle) res.tracks[0].originalTitle = unresolvedTrack.originalTitle;
+    if (unresolvedTrack.originalUri) res.tracks[0].originalUri = unresolvedTrack.originalUri;
+    if (unresolvedTrack.artists) res.tracks[0].artists = unresolvedTrack.artists;
+    if (unresolvedTrack.album) res.tracks[0].album = unresolvedTrack.album;
     return res.tracks[0];
   }
 }
@@ -271,6 +271,10 @@ export interface UnresolvedQuery {
   originalTitle?: string;
   /** The original uri of the unresolved track. */
   originalUri?: string;
+  /** The artists of the track. */
+  artists?: string[];
+  /** The album of the track. */
+  album?: string;
 }
 
 export type Sizes =
