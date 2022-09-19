@@ -183,7 +183,7 @@ export abstract class TrackUtils {
             scriptPath: '/spotify.py',
             args: [spotifyClientID, spotifyClientSecret, unresolvedTrack.originalUri!]
           } as any;
-          await PythonShell.run('youtube_music.py', options, function(err, results) {
+          await PythonShell.run('../scripts/spotify.py', options, function(err, results) {
             if (err) reject(err);
             resolve(results[0]);
           });
