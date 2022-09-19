@@ -112,8 +112,10 @@ export abstract class TrackUtils {
         },
         requester,
       };
-      if (!track.originalTitle) track.originalTitle = track.title;
-      if (!track.originalUri) track.originalUri = track.uri;
+      if (!track.originalTitle)
+        track.originalTitle = track.title;
+      if (!track.originalUri)
+        track.originalUri = track.uri;
 
       track.displayThumbnail = track.displayThumbnail.bind(track);
 
@@ -209,8 +211,10 @@ export abstract class TrackUtils {
       });
 
       if (originalAudio) {
-        if (unresolvedTrack.originalTitle) originalAudio.originalTitle = unresolvedTrack.originalTitle;
-        if (unresolvedTrack.originalUri) originalAudio.originalUri = unresolvedTrack.originalUri;
+        if (unresolvedTrack.originalTitle) 
+          originalAudio.originalTitle = unresolvedTrack.originalTitle;
+        if (unresolvedTrack.originalUri)
+          originalAudio.originalUri = unresolvedTrack.originalUri;
         return originalAudio;
       }
     }
@@ -222,14 +226,18 @@ export abstract class TrackUtils {
       );
 
       if (sameDuration) {
-        if (unresolvedTrack.originalTitle) sameDuration.originalTitle = unresolvedTrack.originalTitle;
-        if (unresolvedTrack.originalUri) sameDuration.originalUri = unresolvedTrack.originalUri;
+        if (unresolvedTrack.originalTitle) 
+          sameDuration.originalTitle = unresolvedTrack.originalTitle;
+        if (unresolvedTrack.originalUri)
+          sameDuration.originalUri = unresolvedTrack.originalUri;
         return sameDuration;
       }
     }
 
-    if (unresolvedTrack.originalTitle) res.tracks[0].originalTitle = unresolvedTrack.originalTitle;
-    if (unresolvedTrack.originalUri) res.tracks[0].originalUri = unresolvedTrack.originalUri;
+    if (unresolvedTrack.originalTitle)
+      res.tracks[0].originalTitle = unresolvedTrack.originalTitle;
+    if (unresolvedTrack.originalUri)
+      res.tracks[0].originalUri = unresolvedTrack.originalUri;
     return res.tracks[0];
   }
 }
