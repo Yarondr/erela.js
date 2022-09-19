@@ -5,6 +5,7 @@ import { Node, NodeStats } from "./Node";
 import { Player, Track, UnresolvedTrack } from "./Player";
 import { Queue } from "./Queue";
 import { env } from "process";
+import path from "path";
 
 /** @hidden */
 const TRACK_SYMBOL = Symbol("track"),
@@ -182,10 +183,10 @@ export abstract class TrackUtils {
           const options = {
             mode: "text",
             pythonOptions: ['-u'],
-            scriptPath: '/spotify.py',
+            scriptPath: path.join(__dirname, "../scripts"),
             args: [spotifyClientID, spotifyClientSecret, unresolvedTrack.originalUri!]
           } as any;
-          await PythonShell.run('../scripts/spotify.py', options, function(err, results) {
+          await PythonShell.run('spotify.py', options, function(err, results) {
             if (err) reject(err);
             resolve(results[0]);
           });

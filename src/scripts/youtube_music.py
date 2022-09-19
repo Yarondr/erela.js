@@ -99,7 +99,3 @@ def _parse_duration(duration: str) -> float:
     # ! This usually occurs when the wrong string is mistaken for the duration
     except (ValueError, TypeError, AttributeError):
         return 0.0
-    
-if __name__ == "__main__":
-    args = sys.argv[1:]
-    get_song(args[0], args[1], args[2], args[3])
