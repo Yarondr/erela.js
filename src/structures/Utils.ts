@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars, @typescript-eslint/no-var-requires*/
+import { PythonShell } from "python-shell";
 import { Manager } from "./Manager";
 import { Node, NodeStats } from "./Node";
 import { Player, Track, UnresolvedTrack } from "./Player";
 import { Queue } from "./Queue";
+import { env } from "process";
 
 /** @hidden */
 const TRACK_SYMBOL = Symbol("track"),
@@ -170,7 +172,25 @@ export abstract class TrackUtils {
     if (!TrackUtils.isUnresolvedTrack(unresolvedTrack))
       throw new RangeError("Provided track is not a UnresolvedTrack.");
 
-    const query = [unresolvedTrack.author, unresolvedTrack.title].filter(str => !!str).join(" - ");
+      let query;
+      if (unresolvedTrack.originalUri.includes("spotify.com")) {
+         query = await new Promise(async function(resolve, reject) {
+          const spotifyClientID = process.env.SPOTIFY_CLIENT_ID;
+          const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+          const options = {
+            mode: "text",
+            pythonOptions: ['-u'],
+            scriptPath: '/spotify.py',
+            args: [spotifyClientID, spotifyClientSecret, unresolvedTrack.originalUri!]
+          } as any;
+          await PythonShell.run('youtube_music.py', options, function(err, results) {
+            if (err) reject(err);
+            resolve(results[0]);
+          });
+        });
+      }
+
+    if (!query) query = [unresolvedTrack.author, unresolvedTrack.title].filter(str => !!str).join(" - ");
     const res = await TrackUtils.manager.search(query, unresolvedTrack.requester);
 
     if (res.loadType !== "SEARCH_RESULT") throw res.exception ?? {
@@ -191,8 +211,6 @@ export abstract class TrackUtils {
       if (originalAudio) {
         if (unresolvedTrack.originalTitle) originalAudio.originalTitle = unresolvedTrack.originalTitle;
         if (unresolvedTrack.originalUri) originalAudio.originalUri = unresolvedTrack.originalUri;
-        if (unresolvedTrack.artists) originalAudio.artists = unresolvedTrack.artists;
-        if (unresolvedTrack.album) originalAudio.album = unresolvedTrack.album;
         return originalAudio;
       }
     }
@@ -206,16 +224,12 @@ export abstract class TrackUtils {
       if (sameDuration) {
         if (unresolvedTrack.originalTitle) sameDuration.originalTitle = unresolvedTrack.originalTitle;
         if (unresolvedTrack.originalUri) sameDuration.originalUri = unresolvedTrack.originalUri;
-        if (unresolvedTrack.artists) sameDuration.artists = unresolvedTrack.artists;
-        if (unresolvedTrack.album) sameDuration.album = unresolvedTrack.album;
         return sameDuration;
       }
     }
 
     if (unresolvedTrack.originalTitle) res.tracks[0].originalTitle = unresolvedTrack.originalTitle;
     if (unresolvedTrack.originalUri) res.tracks[0].originalUri = unresolvedTrack.originalUri;
-    if (unresolvedTrack.artists) res.tracks[0].artists = unresolvedTrack.artists;
-    if (unresolvedTrack.album) res.tracks[0].album = unresolvedTrack.album;
     return res.tracks[0];
   }
 }
@@ -271,10 +285,6 @@ export interface UnresolvedQuery {
   originalTitle?: string;
   /** The original uri of the unresolved track. */
   originalUri?: string;
-  /** The artists of the track. */
-  artists?: string[];
-  /** The album of the track. */
-  album?: string;
 }
 
 export type Sizes =

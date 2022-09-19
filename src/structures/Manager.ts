@@ -1,4 +1,5 @@
 /* eslint-disable no-async-promise-executor */
+import dotenv from 'dotenv';
 import Collection from "@discordjs/collection";
 import { EventEmitter } from "events";
 import { Node, NodeOptions } from "./Node";
@@ -239,6 +240,8 @@ export class Manager extends EventEmitter {
    */
   constructor(options: ManagerOptions) {
     super();
+
+    dotenv.config();
 
     check(options);
 
