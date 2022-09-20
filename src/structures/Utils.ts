@@ -175,9 +175,10 @@ export abstract class TrackUtils {
     if (!TrackUtils.isUnresolvedTrack(unresolvedTrack))
       throw new RangeError("Provided track is not a UnresolvedTrack.");
 
-      let query;
-      if (unresolvedTrack.originalUri.includes("spotify.com")) {
-         query = await new Promise(async function(resolve, reject) {
+    let query;
+    let link = false;
+    if (unresolvedTrack.originalUri.includes("spotify.com")) {
+        query = await new Promise<string>(async (resolve, reject) => {
           const spotifyClientID = process.env.SPOTIFY_CLIENT_ID;
           const spotifyClientSecret = process.env.SPOTIFY_CLIENT_SECRET;
           const options = {
@@ -186,22 +187,31 @@ export abstract class TrackUtils {
             scriptPath: path.join(__dirname, "../scripts"),
             args: [spotifyClientID, spotifyClientSecret, unresolvedTrack.originalUri!]
           } as any;
-          await PythonShell.run('spotify.py', options, function(err, results) {
+          PythonShell.run('spotify.py', options, (err, results) => {
             if (err) reject(err);
             let result = results[0] as string;
             result = result.replace(/\[|\]|'/g, "");
             resolve(result);
           });
-        });
-      }
+      });
+    }
 
     if (!query) query = [unresolvedTrack.author, unresolvedTrack.title].filter(str => !!str).join(" - ");
+    else link = true;
     const res = await TrackUtils.manager.search(query, unresolvedTrack.requester);
+    const loadType = res.loadType;
 
-    if (res.loadType !== "SEARCH_RESULT") throw res.exception ?? {
-      message: "No tracks found.",
-      severity: "COMMON",
-    };
+    if (loadType === "LOAD_FAILED" || loadType !== "NO_MATCHES") {
+      console.log("Failed to resolve track!");
+      return unresolvedTrack as Track;
+    }
+    
+    if (link) {
+      const track = res.tracks[0];
+      track.originalTitle = unresolvedTrack.originalTitle;
+      track.originalUri = unresolvedTrack.originalUri;
+      return track;
+    }
 
     if (unresolvedTrack.author) {
       const channelNames = [unresolvedTrack.author, `${unresolvedTrack.author} - Topic`];
