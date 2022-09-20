@@ -201,7 +201,7 @@ export abstract class TrackUtils {
     const res = await TrackUtils.manager.search(query, unresolvedTrack.requester);
     const loadType = res.loadType;
 
-    if (loadType === "LOAD_FAILED" || loadType !== "NO_MATCHES") {
+    if (loadType === "LOAD_FAILED" || loadType === "NO_MATCHES") {
       console.log("Failed to resolve track!");
       return unresolvedTrack as Track;
     }
