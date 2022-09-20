@@ -188,7 +188,9 @@ export abstract class TrackUtils {
           } as any;
           await PythonShell.run('spotify.py', options, function(err, results) {
             if (err) reject(err);
-            resolve(results[0]);
+            const result = results[0] as string;
+            result.substring(2, result.length - 2);
+            resolve(result);
           });
         });
       }
