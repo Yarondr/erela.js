@@ -188,8 +188,8 @@ export abstract class TrackUtils {
           } as any;
           await PythonShell.run('spotify.py', options, function(err, results) {
             if (err) reject(err);
-            const result = results[0] as string;
-            result.substring(2, result.length - 2);
+            let result = results[0] as string;
+            result = result.replace(/\[|\]|'/g, "");
             resolve(result);
           });
         });
